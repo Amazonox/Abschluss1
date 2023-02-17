@@ -1,7 +1,7 @@
 package edu.kit.informatik.ui;
 
-public class InvalidArgumentException extends Exception{
-    private ErrorMessage errorMessage;
+public class InvalidArgumentException extends Exception {
+    private final ErrorMessage errorMessage;
 
     public InvalidArgumentException(final ErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
@@ -9,6 +9,6 @@ public class InvalidArgumentException extends Exception{
 
     @Override
     public String getMessage() {
-        return errorMessage.getMessage();
+        return this.errorMessage.getMessage();
     }
 }

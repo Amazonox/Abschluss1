@@ -1,25 +1,26 @@
 package edu.kit.informatik.game.actions;
 
 import edu.kit.informatik.game.Player;
+import edu.kit.informatik.game.actions.results.ActionResult;
+import edu.kit.informatik.game.actions.results.BuyVegetableResult;
 import edu.kit.informatik.game.elements.Market;
 import edu.kit.informatik.game.elements.Vegetables;
 import edu.kit.informatik.game.storages.TileScrambler;
 import edu.kit.informatik.ui.InvalidArgumentException;
 
-import java.util.List;
-
-public class BuyVegetable extends Action{
+public class BuyVegetable implements Action {
     Vegetables vegetable;
 
-    public BuyVegetable(final Player player, final Market market,
-                        final Vegetables vegetable, final TileScrambler tiles) {
-        super(player, market,tiles);
+    public BuyVegetable(final Vegetables vegetable) {
         this.vegetable = vegetable;
     }
 
+
     @Override
-    public void execute() throws InvalidArgumentException {
-        this.player.spendGold(this.market.getSellingPrice(this.vegetable));
-        this.player.getLand().getBarn().storeVegetables(this.vegetable);
+    public ActionResult execute(Player player, Market market, TileScrambler tiles) throws InvalidArgumentException {
+        int price = market.getSellingPrice(this.vegetable);
+        player.spendGold(price);
+        player.getLand().getBarn().storeVegetables(this.vegetable);
+        return new BuyVegetableResult(this.vegetable,price);
     }
 }

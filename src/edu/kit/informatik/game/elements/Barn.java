@@ -6,14 +6,12 @@ import edu.kit.informatik.ui.InvalidArgumentException;
 import edu.kit.informatik.ui.Main;
 import edu.kit.informatik.utils.Counter;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class Barn implements Tile{
+public class Barn implements Tile {
     private VegetableAmounts storedVegetables;
     private Counter counter;
-    private Tiles tiles;
+    private final Tiles tiles;
 
     private boolean hasFoodSpoiled;
 
@@ -26,34 +24,35 @@ public class Barn implements Tile{
 
     /**
      * clones a barn so that it does not update but has the same values
+     *
      * @param barn
      */
-    public Barn(final Barn barn){
+    public Barn(final Barn barn) {
         this.tiles = barn.tiles;
         this.storedVegetables = new VegetableAmounts(barn.storedVegetables);
         this.hasFoodSpoiled = barn.hasFoodSpoiled;
-        this.counter = new Counter(barn.counter);
+        this.counter = barn.counter == null ? null : new Counter(barn.counter);
     }
 
-    public void storeVegetables(final Collection<Vegetables> vegetables){
+    public void storeVegetables(final Collection<Vegetables> vegetables) {
         this.storedVegetables.addAll(vegetables);
         this.startMoldTimer();
     }
 
-    public void storeVegetables(Vegetables vegetable, int amount) throws InvalidArgumentException {
-        if(amount < 0) throw new InvalidArgumentException(ErrorMessage.BELOW_ZERO_INTEGER);
-        this.storedVegetables.changeVegetableAmountBy(vegetable,amount);
+    public void storeVegetables(final Vegetables vegetable, final int amount) throws InvalidArgumentException {
+        if (amount < 0) throw new InvalidArgumentException(ErrorMessage.BELOW_ZERO_INTEGER);
+        this.storedVegetables.changeVegetableAmountBy(vegetable, amount);
         this.startMoldTimer();
     }
 
-    public void storeVegetables(Vegetables vegetable) throws InvalidArgumentException {
-        this.storeVegetables(vegetable,1);
+    public void storeVegetables(final Vegetables vegetable) throws InvalidArgumentException {
+        this.storeVegetables(vegetable, 1);
 
     }
 
-    private void startMoldTimer(){
-        if(!this.storedVegetables.isEmpty() && (this.counter == null || this.counter.isFinished())){
-            this.counter = new Counter(6,()-> {
+    private void startMoldTimer() {
+        if (!this.storedVegetables.isEmpty() && (this.counter == null || this.counter.isFinished())) {
+            this.counter = new Counter(6, () -> {
                 this.storedVegetables.resetAmounts();
                 this.hasFoodSpoiled = true;
                 return false;
@@ -61,10 +60,10 @@ public class Barn implements Tile{
         }
     }
 
-    public void removeVegetable(Vegetables vegetable) throws InvalidArgumentException {
-        if(!this.storedVegetables.changeVegetableAmountBy(vegetable,-1))
+    public void removeVegetable(final Vegetables vegetable) throws InvalidArgumentException {
+        if (!this.storedVegetables.changeVegetableAmountBy(vegetable, -1))
             throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
-        if(this.storedVegetables.isEmpty()) {
+        if (this.storedVegetables.isEmpty()) {
             this.counter.removeCounter();
             this.counter = null;
         }
@@ -72,15 +71,17 @@ public class Barn implements Tile{
 
     /**
      * the vegetables to remove
+     *
      * @param vegetableAmounts positive amounts
      * @throws InvalidArgumentException
      */
-    public void removeVegetables(VegetableAmounts vegetableAmounts) throws InvalidArgumentException {
-        VegetableAmounts vegetableAmountsAfter = new VegetableAmounts(this.storedVegetables);
+    public void removeVegetables(final VegetableAmounts vegetableAmounts) throws InvalidArgumentException {
+        final VegetableAmounts vegetableAmountsAfter = new VegetableAmounts(this.storedVegetables);
 
-        for(final Vegetables vegetables: Vegetables.values()){
-            if(!vegetableAmountsAfter.changeVegetableAmountBy(vegetables,
-                -vegetableAmounts.getAmount(vegetables))) throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
+        for (final Vegetables vegetables : Vegetables.values()) {
+            if (!vegetableAmountsAfter.changeVegetableAmountBy(vegetables,
+                    -vegetableAmounts.getAmount(vegetables)))
+                throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
         }
         this.storedVegetables = vegetableAmountsAfter;
     }
@@ -101,8 +102,8 @@ public class Barn implements Tile{
         return new Barn(this);
     }
 
-    public int foodSpoilsIn(){
-        return  this.counter.getRoundsToEnd();
+    public int foodSpoilsIn() {
+        return this.counter.getRoundsToEnd();
     }
 
     public VegetableAmounts getStoredVegetables() {
@@ -114,8 +115,8 @@ public class Barn implements Tile{
         final StringBuilder result = new StringBuilder();
         result.append(Main.SPACE.repeat(Tile.TO_STRING_SIZE.x())).append(System.lineSeparator());
         final String counter = this.counter == null || this.counter.isFinished()
-            ?"*":   Integer.toString(this.counter.getRoundsToEnd());
-        result.append(String.format(" %s %s ",tiles.getAbbreviation(),counter)).append(System.lineSeparator());
+                ? "*" : Integer.toString(this.counter.getRoundsToEnd());
+        result.append(String.format(" %s %s ", this.tiles.getAbbreviation(), counter)).append(System.lineSeparator());
         result.append(Main.SPACE.repeat(Tile.TO_STRING_SIZE.x()));
         return result.toString();
     }

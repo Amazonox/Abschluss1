@@ -15,9 +15,11 @@ public enum ErrorMessage {
     NOT_A_INTEGER("The input should be a integer"),
     NOT_A_NAME("Names should be of the form [A-Za-z]+"),
     NO_VEGETABLE_ON_TILE("There are no vegetables on this tile"),
-    NOT_ENOUGH_VEGETABLES_ON_TILE("There are not enough vegetables on this tile")
-    ;
-    private String message;
+    NOT_ENOUGH_VEGETABLES_ON_TILE("There are not enough vegetables on this tile"),
+    NOT_A_COMMAND("This string doesn't fulfill all the requirements for an command,"
+             + "either the command or the arguments are faulted");
+
+    private final String message;
 
     ErrorMessage(final String message) {
         this.message = message;

@@ -8,20 +8,19 @@ import edu.kit.informatik.ui.InvalidArgumentException;
 import java.util.Collection;
 
 public class Player {
-    private int gold;
     private final Land land;
-
     private final String name;
+    private int gold;
 
 
-    public Player(final String name,final int startGold, final Land land, final Collection<Vegetables> vegetables) {
+    public Player(final String name, final int startGold, final Land land, final Collection<Vegetables> vegetables) {
         this.name = name;
         this.gold = startGold;
         this.land = land;
         this.land.getBarn().storeVegetables(vegetables);
     }
 
-    public Player(final Player player){
+    public Player(final Player player) {
         this.name = player.name;
         this.gold = player.gold;
         this.land = new Land(player.land);
@@ -31,9 +30,14 @@ public class Player {
         return this.land;
     }
 
-    public void spendGold(int amount) throws InvalidArgumentException {
-        if(this.gold-amount < 0) throw new InvalidArgumentException(ErrorMessage.INSUFFICIENT_MONEY);
+    public void spendGold(final int amount) throws InvalidArgumentException {
+        if (this.gold - amount < 0) throw new InvalidArgumentException(ErrorMessage.INSUFFICIENT_MONEY);
         this.gold -= amount;
+    }
+
+    public void addGold(final int gold) throws InvalidArgumentException {
+        if (gold < 0) throw new InvalidArgumentException(ErrorMessage.BELOW_ZERO_INTEGER);
+        this.gold += gold;
     }
 
     public String getName() {
