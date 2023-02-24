@@ -5,7 +5,7 @@ import edu.kit.informatik.game.elements.CultivatableTile;
 import edu.kit.informatik.game.elements.Tile;
 import edu.kit.informatik.game.elements.Tiles;
 import edu.kit.informatik.ui.ErrorMessage;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 import edu.kit.informatik.ui.Main;
 import edu.kit.informatik.utils.Vector2d;
 
@@ -40,7 +40,7 @@ public class Land {
     }
 
 
-    public void setTile(final Tile tile, final Vector2d vector2d) throws InvalidArgumentException {
+    public void setTile(final Tile tile, final Vector2d vector2d) throws GameException {
 
 
         // money shenanigans
@@ -59,10 +59,10 @@ public class Land {
         return (Barn) this.map.get(this.barnLocation);
     }
 
-    public CultivatableTile getTile(final Vector2d location) throws InvalidArgumentException {
+    public CultivatableTile getTile(final Vector2d location) throws GameException {
         if (!this.map.containsKey(location))
-            throw new InvalidArgumentException(ErrorMessage.NO_TILE_WITH_THESE_COORDINATS);
-        if (location.equals(this.barnLocation)) throw new InvalidArgumentException(ErrorMessage.TILE_IS_BARN);
+            throw new GameException(ErrorMessage.NO_TILE_WITH_THESE_COORDINATS);
+        if (location.equals(this.barnLocation)) throw new GameException(ErrorMessage.TILE_IS_BARN);
         return (CultivatableTile) this.map.get(location);
     }
 
@@ -74,8 +74,8 @@ public class Land {
         return this.map.get(new Vector2d(location.x(), location.y() - 1)) != null;
     }
 
-    public int getManhattanDistanceForNewTile(final Vector2d location) throws InvalidArgumentException {
-        if (!this.isPlacable(location)) throw new InvalidArgumentException(ErrorMessage.TILE_NOT_PLACABLE);
+    public int getManhattanDistanceForNewTile(final Vector2d location) throws GameException {
+        if (!this.isPlacable(location)) throw new GameException(ErrorMessage.TILE_NOT_PLACABLE);
         return location.calculateManhattanDistance(this.barnLocation);
     }
 

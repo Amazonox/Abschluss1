@@ -2,7 +2,7 @@ package edu.kit.informatik.game.elements;
 
 import edu.kit.informatik.game.storages.VegetableAmounts;
 import edu.kit.informatik.ui.ErrorMessage;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 import edu.kit.informatik.ui.Main;
 import edu.kit.informatik.utils.Counter;
 
@@ -39,13 +39,13 @@ public class Barn implements Tile {
         this.startMoldTimer();
     }
 
-    public void storeVegetables(final Vegetables vegetable, final int amount) throws InvalidArgumentException {
-        if (amount < 0) throw new InvalidArgumentException(ErrorMessage.BELOW_ZERO_INTEGER);
+    public void storeVegetables(final Vegetables vegetable, final int amount) throws GameException {
+        if (amount < 0) throw new GameException(ErrorMessage.BELOW_ZERO_INTEGER);
         this.storedVegetables.changeVegetableAmountBy(vegetable, amount);
         this.startMoldTimer();
     }
 
-    public void storeVegetables(final Vegetables vegetable) throws InvalidArgumentException {
+    public void storeVegetables(final Vegetables vegetable) throws GameException {
         this.storeVegetables(vegetable, 1);
 
     }
@@ -60,9 +60,9 @@ public class Barn implements Tile {
         }
     }
 
-    public void removeVegetable(final Vegetables vegetable) throws InvalidArgumentException {
+    public void removeVegetable(final Vegetables vegetable) throws GameException {
         if (!this.storedVegetables.changeVegetableAmountBy(vegetable, -1))
-            throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
+            throw new GameException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
         if (this.storedVegetables.isEmpty()) {
             this.counter.removeCounter();
             this.counter = null;
@@ -73,15 +73,15 @@ public class Barn implements Tile {
      * the vegetables to remove
      *
      * @param vegetableAmounts positive amounts
-     * @throws InvalidArgumentException
+     * @throws GameException
      */
-    public void removeVegetables(final VegetableAmounts vegetableAmounts) throws InvalidArgumentException {
+    public void removeVegetables(final VegetableAmounts vegetableAmounts) throws GameException {
         final VegetableAmounts vegetableAmountsAfter = new VegetableAmounts(this.storedVegetables);
 
         for (final Vegetables vegetables : Vegetables.values()) {
             if (!vegetableAmountsAfter.changeVegetableAmountBy(vegetables,
                     -vegetableAmounts.getAmount(vegetables)))
-                throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
+                throw new GameException(ErrorMessage.NOT_ENOUGH_VEGETABLES);
         }
         this.storedVegetables = vegetableAmountsAfter;
     }

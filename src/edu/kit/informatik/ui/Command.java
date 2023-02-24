@@ -13,7 +13,6 @@ import edu.kit.informatik.utils.Vector2d;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public enum Command {
     SHOW_BARN("show barn") {
@@ -83,7 +82,7 @@ public enum Command {
             }
             final int totalLength = wordLength + integerLength + Main.SPACE.length();
             final StringBuilder stringBuilder = new StringBuilder();
-            final Set<Vegetables> marketSort = market.getVegetableListbyMarketPriceList();
+            final Collection<Vegetables> marketSort = market.getVegetableListByMarketPriceList();
             for (final Vegetables vegetable : marketSort) {
                 final String front = vegetable.getPlural() + Main.WORD_NUMBER_SEPERATOR;
                 final String back = Integer.toString(market.getSellingPrice(vegetable));
@@ -96,7 +95,7 @@ public enum Command {
     },
     SELL("sell ((%s)+|all)".formatted(Vegetables.getSingularRegex())) {
         @Override
-        String execute(final Game game, final String[] lineParts) throws InvalidArgumentException {
+        String execute(final Game game, final String[] lineParts) throws GameException {
             final VegetableAmounts vegetableAmounts = new VegetableAmounts();
             if (lineParts[ALL_LOCATION].equals("all")) {
                 vegetableAmounts.addAll(game.getPlayersCurrentBarn().getStoredVegetables());
@@ -111,14 +110,14 @@ public enum Command {
     },
     BUY_VEGETABLE("buy (%s)".formatted(Vegetables.getSingularRegex())) {
         @Override
-        String execute(Game game, String[] lineParts) throws InvalidArgumentException {
+        String execute(Game game, String[] lineParts) throws GameException {
             Vegetables vegetable = Vegetables.fromSingular(lineParts[BEGINNING_OF_VEGETABLE_LIST]);
             return game.performAction(new BuyVegetable(vegetable)).toString();
         }
     },
     BUY_LAND("buy land (%s) (%s)".formatted(Main.INTEGER_REGEX, Main.INTEGER_REGEX)) {
         @Override
-        String execute(Game game, String[] lineParts) throws InvalidArgumentException {
+        String execute(Game game, String[] lineParts) throws GameException {
             Vector2d location = new Vector2d(lineParts[POSITION_OF_X_VALUE + OFFSET_BECAUSE_LAND]
                     , lineParts[POSITION_OF_Y_VALUE + OFFSET_BECAUSE_LAND]);
             return game.performAction(new BuyLand(location)).toString();
@@ -126,7 +125,7 @@ public enum Command {
     },
     HARVEST("harvest (%s) (%s) (%s)".formatted(Main.INTEGER_REGEX, Main.INTEGER_REGEX, Main.POSITIVE_INTEGER_REGEX)) {
         @Override
-        String execute(Game game, String[] lineParts) throws InvalidArgumentException {
+        String execute(Game game, String[] lineParts) throws GameException {
             Vector2d location = new Vector2d(lineParts[POSITION_OF_X_VALUE], lineParts[POSITION_OF_Y_VALUE]);
             int amount = Integer.parseInt(lineParts[POSITION_OF_AMOUNT_IN_LINE]);
             return game.performAction(new Harvest(location, amount)).toString();
@@ -134,7 +133,7 @@ public enum Command {
     },
     PLANT("plant (%s) (%s) (%s)".formatted(Main.INTEGER_REGEX, Main.INTEGER_REGEX, Vegetables.getSingularRegex())) {
         @Override
-        String execute(Game game, String[] lineParts) throws InvalidArgumentException {
+        String execute(Game game, String[] lineParts) throws GameException {
             Vector2d location = new Vector2d(lineParts[POSITION_OF_X_VALUE], lineParts[POSITION_OF_Y_VALUE]);
             Vegetables vegetable = Vegetables.fromSingular(lineParts[POSITION_OF_VEGETABLEF_IN_LINE]);
             return game.performAction(new Plant(location, vegetable)).toString();
@@ -142,14 +141,14 @@ public enum Command {
     },
     QUIT(Main.QUIT) {
         @Override
-        String execute(Game game, String[] lineParts) throws InvalidArgumentException {
+        String execute(Game game, String[] lineParts) throws GameException {
             game.quit();
             return null;
         }
     },
     NEXT("end turn") {
         @Override
-        String execute(Game game, String[] lineParts) throws InvalidArgumentException {
+        String execute(Game game, String[] lineParts) throws GameException {
             final TurnInformation turnInformation = game.nextTurn();
             if (!game.isRunning) return null;
             return turnInformation.toString();
@@ -169,14 +168,14 @@ public enum Command {
         this.commandMatch = commandMatch;
     }
 
-    public static final String executeCommand(Game game, String commandLine) throws InvalidArgumentException {
+    public static final String executeCommand(Game game, String commandLine) throws GameException {
         for (Command command : values()) {
             if (commandLine.matches(command.commandMatch)) {
                 return command.execute(game, commandLine.split(Main.SPACE));
             }
         }
-        throw new InvalidArgumentException(ErrorMessage.NOT_A_COMMAND);
+        throw new GameException(ErrorMessage.NOT_A_COMMAND);
     }
 
-    abstract String execute(Game game, String[] lineParts) throws InvalidArgumentException;
+    abstract String execute(Game game, String[] lineParts) throws GameException;
 }

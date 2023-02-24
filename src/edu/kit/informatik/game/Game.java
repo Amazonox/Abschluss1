@@ -7,7 +7,7 @@ import edu.kit.informatik.game.storages.Land;
 import edu.kit.informatik.game.storages.PriceLink;
 import edu.kit.informatik.game.storages.TileScrambler;
 import edu.kit.informatik.game.storages.TurnInformation;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 import edu.kit.informatik.utils.Counter;
 import edu.kit.informatik.utils.TurnEndListener;
 import edu.kit.informatik.utils.Vector2d;
@@ -135,7 +135,7 @@ public class Game {
         return new Market(this.market);
     }
 
-    public ActionResult performAction(final Action action) throws InvalidArgumentException {
+    public ActionResult performAction(final Action action) throws GameException {
         final ActionResult actionResult
                 = action.execute(this.playerList.get(this.currentPlayer), this.market, this.tilesScrambler);
         this.actionsPerformed++;

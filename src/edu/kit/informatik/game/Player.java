@@ -3,7 +3,7 @@ package edu.kit.informatik.game;
 import edu.kit.informatik.game.elements.Vegetables;
 import edu.kit.informatik.game.storages.Land;
 import edu.kit.informatik.ui.ErrorMessage;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 
 import java.util.Collection;
 
@@ -30,13 +30,13 @@ public class Player {
         return this.land;
     }
 
-    public void spendGold(final int amount) throws InvalidArgumentException {
-        if (this.gold - amount < 0) throw new InvalidArgumentException(ErrorMessage.INSUFFICIENT_MONEY);
+    public void spendGold(final int amount) throws GameException {
+        if (this.gold - amount < 0) throw new GameException(ErrorMessage.INSUFFICIENT_MONEY);
         this.gold -= amount;
     }
 
-    public void addGold(final int gold) throws InvalidArgumentException {
-        if (gold < 0) throw new InvalidArgumentException(ErrorMessage.BELOW_ZERO_INTEGER);
+    public void addGold(final int gold) throws GameException {
+        if (gold < 0) throw new GameException(ErrorMessage.BELOW_ZERO_INTEGER);
         this.gold += gold;
     }
 

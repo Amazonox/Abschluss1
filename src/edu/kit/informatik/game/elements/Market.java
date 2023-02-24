@@ -4,8 +4,8 @@ import edu.kit.informatik.game.storages.PriceLink;
 import edu.kit.informatik.game.storages.VegetableAmounts;
 import edu.kit.informatik.utils.TurnEndListener;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Market {
     MarketPriceList marketPriceList;
@@ -53,8 +53,8 @@ public class Market {
         this.vegetablesSoldThisRound.resetAmounts();
     }
 
-    public Set<Vegetables> getVegetableListbyMarketPriceList() {
-        final Set<Vegetables> result = new HashSet<>();
+    public Collection<Vegetables> getVegetableListByMarketPriceList() {
+        final Collection<Vegetables> result = new ArrayList<>();
         for (final PriceLink priceLink : this.marketPriceList.getLinkes()) {
             result.add(priceLink.vegetable1());
             result.add(priceLink.vegetable2());

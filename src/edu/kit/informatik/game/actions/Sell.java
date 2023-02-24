@@ -7,7 +7,7 @@ import edu.kit.informatik.game.elements.Barn;
 import edu.kit.informatik.game.elements.Market;
 import edu.kit.informatik.game.storages.TileScrambler;
 import edu.kit.informatik.game.storages.VegetableAmounts;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 
 public class Sell implements Action {
     private VegetableAmounts vegetableAmountsToSell;
@@ -17,7 +17,7 @@ public class Sell implements Action {
     }
 
     @Override
-    public ActionResult execute(Player player, Market market, TileScrambler tiles) throws InvalidArgumentException {
+    public ActionResult execute(Player player, Market market, TileScrambler tiles) throws GameException {
         final Barn barn = player.getLand().getBarn();
         barn.removeVegetables(this.vegetableAmountsToSell);
         final int price = market.sellVegetables(this.vegetableAmountsToSell);

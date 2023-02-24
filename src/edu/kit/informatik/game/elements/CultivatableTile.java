@@ -1,7 +1,7 @@
 package edu.kit.informatik.game.elements;
 
 import edu.kit.informatik.ui.ErrorMessage;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 import edu.kit.informatik.ui.Main;
 import edu.kit.informatik.utils.Counter;
 
@@ -32,12 +32,12 @@ public class CultivatableTile implements Tile {
         this.numberOfVegetablesGrown = cultivatableTile.numberOfVegetablesGrown;
     }
 
-    public void plantVegetable(final Vegetables vegetable) throws InvalidArgumentException {
-        if (this.currentlyPlantedVegetables != null) throw new InvalidArgumentException(
+    public void plantVegetable(final Vegetables vegetable) throws GameException {
+        if (this.currentlyPlantedVegetables != null) throw new GameException(
                 ErrorMessage.TILE_ALREADY_HAS_VEGETABLE
         );
         if (!this.tiles.getCultivatableVegetables().contains(vegetable))
-            throw new InvalidArgumentException(ErrorMessage.VEGETABLE_NOT_CULTIVATABLE_ON_THIS_TILE);
+            throw new GameException(ErrorMessage.VEGETABLE_NOT_CULTIVATABLE_ON_THIS_TILE);
         this.currentlyPlantedVegetables = vegetable;
         this.numberOfVegetables++;
         this.counter = new Counter(this.currentlyPlantedVegetables.getDaysToGrow(),
@@ -49,10 +49,10 @@ public class CultivatableTile implements Tile {
                 });
     }
 
-    public Vegetables removeVegetables(final int amount) throws InvalidArgumentException {
-        if (this.numberOfVegetables == 0) throw new InvalidArgumentException(ErrorMessage.NO_VEGETABLE_ON_TILE);
+    public Vegetables removeVegetables(final int amount) throws GameException {
+        if (this.numberOfVegetables == 0) throw new GameException(ErrorMessage.NO_VEGETABLE_ON_TILE);
         if (this.numberOfVegetables < amount)
-            throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH_VEGETABLES_ON_TILE);
+            throw new GameException(ErrorMessage.NOT_ENOUGH_VEGETABLES_ON_TILE);
         this.numberOfVegetables -= amount;
         final Vegetables plantedVegetable = this.currentlyPlantedVegetables;
         if (this.numberOfVegetables == 0) {

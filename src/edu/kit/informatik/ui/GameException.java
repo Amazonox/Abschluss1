@@ -1,9 +1,9 @@
 package edu.kit.informatik.ui;
 
-public class InvalidArgumentException extends Exception {
+public class GameException extends Exception {
     private final ErrorMessage errorMessage;
 
-    public InvalidArgumentException(final ErrorMessage errorMessage) {
+    public GameException(final ErrorMessage errorMessage) {
         this.errorMessage = errorMessage;
     }
 

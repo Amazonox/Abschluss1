@@ -88,8 +88,8 @@ public final class Main {
                 if (output != null) {
                     System.out.println(output);
                 }
-            } catch (final InvalidArgumentException invalidArgumentException) {
-                printErrorMessage(invalidArgumentException.getMessage());
+            } catch (final GameException gameException) {
+                printErrorMessage(gameException.getMessage());
             }
         }
         winScreen(game.getPlayerList());

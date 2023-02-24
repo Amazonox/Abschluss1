@@ -8,7 +8,7 @@ import edu.kit.informatik.game.elements.CultivatableTile;
 import edu.kit.informatik.game.elements.Market;
 import edu.kit.informatik.game.elements.Vegetables;
 import edu.kit.informatik.game.storages.TileScrambler;
-import edu.kit.informatik.ui.InvalidArgumentException;
+import edu.kit.informatik.ui.GameException;
 import edu.kit.informatik.utils.Vector2d;
 
 public class Plant implements Action {
@@ -21,7 +21,7 @@ public class Plant implements Action {
     }
 
     @Override
-    public ActionResult execute(Player player, Market market, TileScrambler tiles) throws InvalidArgumentException {
+    public ActionResult execute(Player player, Market market, TileScrambler tiles) throws GameException {
         final CultivatableTile tile = player.getLand().getTile(this.tilePosition);
         final Barn barn = player.getLand().getBarn();
         barn.removeVegetable(this.vegetable);
