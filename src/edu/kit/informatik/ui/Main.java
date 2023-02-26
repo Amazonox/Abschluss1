@@ -35,18 +35,20 @@ public final class Main {
     public static final String POSITIVE_INTEGER_REGEX = "[1-9]\\d*";
     public static final String NAME_REGEX = "[A-Za-z]+";
     private static final String ERROR_STRING = "Error:";
+    //040 is space
     private static final String PIXEL_ART = """
-                                       _.-^-._    .--.
-                                    .-'   _   '-. |__|
-                                   /     |_|     \\|  |
-                                  /               \\  |
-                                 /|     _____     |\\ |
-                                  |    |==|==|    |  |
-              |---|---|---|---|---|    |--|--|    |  |
-              |---|---|---|---|---|    |==|==|    |  |
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            ^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^""";
+                           _.-^-._    .--.\040\040\040\040
+                        .-'   _   '-. |__|\040\040\040\040
+                       /     |_|     \\|  |\040\040\040\040
+                      /               \\  |\040\040\040\040
+                     /|     _____     |\\ |\040\040\040\040
+                      |    |==|==|    |  |\040\040\040\040
+  |---|---|---|---|---|    |--|--|    |  |\040\040\040\040
+  |---|---|---|---|---|    |==|==|    |  |\040\040\040\040
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^ QUEENS FARMING ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""";
     private static final String SETUP_NAME_COUNT = "How many players?";
     private static final String SETUP_PLAYER_NAMES = "Enter the name of player %d:";
     private static final String SETUP_START_GOLD = "With how much gold should each player start?";
@@ -173,7 +175,7 @@ public final class Main {
             winnerString.append(ENDSCREEN_WINNERS_MIDDLE.formatted(winners.get(i).getName()));
         }
         winnerString.append(ENDSCREEN_WINNERS_END.formatted(winners.get(winners.size() - 1).getName()));
-        System.out.print(winnerString);
+        System.out.println(winnerString);
     }
 
 

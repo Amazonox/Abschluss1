@@ -2,7 +2,12 @@ package edu.kit.informatik.game;
 
 import edu.kit.informatik.game.actions.Action;
 import edu.kit.informatik.game.actions.results.ActionResult;
-import edu.kit.informatik.game.elements.*;
+import edu.kit.informatik.game.elements.Barn;
+import edu.kit.informatik.game.elements.Market;
+import edu.kit.informatik.game.elements.MarketPriceList;
+import edu.kit.informatik.game.elements.Tile;
+import edu.kit.informatik.game.elements.Tiles;
+import edu.kit.informatik.game.elements.Vegetables;
 import edu.kit.informatik.game.storages.Land;
 import edu.kit.informatik.game.storages.PriceLink;
 import edu.kit.informatik.game.storages.TileScrambler;
@@ -18,26 +23,28 @@ import java.util.List;
 import java.util.Map;
 
 public class Game {
-    private static final List<Vegetables> START_VEGETABLES = List.of(Vegetables.CARROT, Vegetables.TOMATO, Vegetables.SALAD,
+    private static final List<Vegetables> START_VEGETABLES =
+        List.of(Vegetables.CARROT, Vegetables.TOMATO, Vegetables.SALAD,
             Vegetables.MUSHROOM);
     private static final Vector2d BARN_LOCATION = new Vector2d(0, 0);
-    private static final Map<Vector2d, Tile> START_MAP = Map.of(
-            BARN_LOCATION,
-            Tiles.BARN.getTile(),
-            new Vector2d(-1, 0),
-            Tiles.GARDEN.getTile(),
-            new Vector2d(1, 0),
-            Tiles.GARDEN.getTile(),
-            new Vector2d(0, 1),
-            Tiles.FIELD.getTile());
+    private static final Map<Vector2d, Tiles> START_MAP = Map.of(
+        BARN_LOCATION,
+        Tiles.BARN,
+        new Vector2d(-1, 0),
+        Tiles.GARDEN,
+        new Vector2d(1, 0),
+        Tiles.GARDEN,
+        new Vector2d(0, 1),
+        Tiles.FIELD);
     private static final MarketPriceList MARKET_PRICE_LIST = new MarketPriceList(
-            Map.of(Vegetables.MUSHROOM, new int[]{12, 15, 16, 17, 20},
-                    Vegetables.CARROT, new int[]{3, 2, 2, 2, 1},
-                    Vegetables.TOMATO, new int[]{3, 5, 6, 7, 9},
-                    Vegetables.SALAD, new int[]{6, 5, 4, 3, 2}),
-            List.of(new PriceLink(Vegetables.MUSHROOM, Vegetables.CARROT, 2),
-                    new PriceLink(Vegetables.TOMATO, Vegetables.SALAD, 2))
+        Map.of(Vegetables.MUSHROOM, new int[] {12, 15, 16, 17, 20},
+            Vegetables.CARROT, new int[] {3, 2, 2, 2, 1},
+            Vegetables.TOMATO, new int[] {3, 5, 6, 7, 9},
+            Vegetables.SALAD, new int[] {6, 5, 4, 3, 2}),
+        List.of(new PriceLink(Vegetables.MUSHROOM, Vegetables.CARROT, 2),
+            new PriceLink(Vegetables.TOMATO, Vegetables.SALAD, 2))
     );
+    private static final int MAX_ACTIONS = 2;
     private final List<Player> playerList;
     private final int endGold;
     private final TileScrambler tilesScrambler;
@@ -45,7 +52,6 @@ public class Game {
     public boolean isRunning;
     private int currentPlayer;
     private int actionsPerformed;
-    private static final int MAX_ACTIONS = 2;
 
 
     public Game(final List<String> playerNames, final int startGold, final int endGold, final int seed) {
@@ -62,13 +68,13 @@ public class Game {
     private void intPlayers(final int startGold, final Iterable<String> playerNames, final int endGold) {
         for (final String name : playerNames) {
             this.playerList.add(
-                    new Player(name, startGold, new Land(new HashMap<>(START_MAP), BARN_LOCATION), START_VEGETABLES));
+                new Player(name, startGold, new Land(START_MAP, BARN_LOCATION), START_VEGETABLES));
         }
     }
 
     public TurnInformation firstTurn() {
         return new TurnInformation(this.playerList.get(this.currentPlayer).getName(),
-                0, false);
+            0, false);
     }
 
     public TurnInformation nextTurn() {
@@ -80,8 +86,8 @@ public class Game {
         }
         final Player playerThisTurn = this.playerList.get(this.currentPlayer);
         return new TurnInformation(playerThisTurn.getName()
-                , playerThisTurn.getLand().getNumberOfVegetablesGrown()
-                , playerThisTurn.getLand().hasFoodSpoiled());
+            , playerThisTurn.getLand().getNumberOfVegetablesGrown()
+            , playerThisTurn.getLand().hasFoodSpoiled());
     }
 
     private void updateRound() {
@@ -101,8 +107,9 @@ public class Game {
                 tiles.add(tile);
             }
         }
-        for (final Tile tile : START_MAP.values()) {
-            tiles.remove(tile.getTiles());
+        for (final Tiles tile : START_MAP.values()) {
+            for (int i = 0; i < this.playerList.size(); i++)
+                tiles.remove(tile);
         }
         return tiles;
     }
@@ -137,7 +144,7 @@ public class Game {
 
     public ActionResult performAction(final Action action) throws GameException {
         final ActionResult actionResult
-                = action.execute(this.playerList.get(this.currentPlayer), this.market, this.tilesScrambler);
+            = action.execute(this.playerList.get(this.currentPlayer), this.market, this.tilesScrambler);
         this.actionsPerformed++;
         if (this.actionsPerformed == MAX_ACTIONS) {
             TurnInformation turnInformation = (this.nextTurn());

@@ -93,10 +93,13 @@ public enum Command {
             return stringBuilder.toString();
         }
     },
-    SELL("sell ((%s)+|all)".formatted(Vegetables.getSingularRegex())) {
+    SELL("sell(( (%s))+| all)?".formatted(Vegetables.getSingularRegex())) {
         @Override
         String execute(final Game game, final String[] lineParts) throws GameException {
             final VegetableAmounts vegetableAmounts = new VegetableAmounts();
+            if(lineParts.length == LINE_PART_LENGTH_WITHOUT_ARGUMENTS){
+                return game.performAction(new Sell(vegetableAmounts)).toString();
+            }
             if (lineParts[ALL_LOCATION].equals("all")) {
                 vegetableAmounts.addAll(game.getPlayersCurrentBarn().getStoredVegetables());
             } else {
@@ -154,6 +157,7 @@ public enum Command {
             return turnInformation.toString();
         }
     };
+    public static final int LINE_PART_LENGTH_WITHOUT_ARGUMENTS = 1;
     public static final int POSITION_OF_VEGETABLEF_IN_LINE = 3;
     public static final int POSITION_OF_AMOUNT_IN_LINE = 3;
     public static final int POSITION_OF_Y_VALUE = 2;

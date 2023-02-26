@@ -10,14 +10,14 @@ import edu.kit.informatik.game.storages.VegetableAmounts;
 import edu.kit.informatik.ui.GameException;
 
 public class Sell implements Action {
-    private VegetableAmounts vegetableAmountsToSell;
+    private final VegetableAmounts vegetableAmountsToSell;
 
     public Sell(final VegetableAmounts vegetableAmountsToSell) {
         this.vegetableAmountsToSell = vegetableAmountsToSell;
     }
 
     @Override
-    public ActionResult execute(Player player, Market market, TileScrambler tiles) throws GameException {
+    public ActionResult execute(final Player player, final Market market, final TileScrambler tiles) throws GameException {
         final Barn barn = player.getLand().getBarn();
         barn.removeVegetables(this.vegetableAmountsToSell);
         final int price = market.sellVegetables(this.vegetableAmountsToSell);

@@ -10,11 +10,11 @@ public enum Tiles {
             return new Barn(this);
         }
     },
-    GARDEN("G", "garden", 4, 2, List.of(Vegetables.values())),
-    FIELD("Fi", "field", 4, 4, List.of(Vegetables.CARROT, Vegetables.SALAD, Vegetables.TOMATO)),
-    LARGE_FIELD("LFi", "large field", 2, 8, List.of(Vegetables.CARROT, Vegetables.SALAD, Vegetables.TOMATO)),
-    FOREST("Fo", "forest", 2, 4, List.of(Vegetables.CARROT, Vegetables.MUSHROOM)),
-    LARGE_FOREST("LFo", "large forest", 1, 8, List.of(Vegetables.CARROT, Vegetables.MUSHROOM));
+    GARDEN("G", "Garden", 4, 2, List.of(Vegetables.values())),
+    FIELD("Fi", "Field", 4, 4, List.of(Vegetables.CARROT, Vegetables.SALAD, Vegetables.TOMATO)),
+    LARGE_FIELD("LFi", "Large Field", 2, 8, List.of(Vegetables.CARROT, Vegetables.SALAD, Vegetables.TOMATO)),
+    FOREST("Fo", "Forest", 2, 4, List.of(Vegetables.CARROT, Vegetables.MUSHROOM)),
+    LARGE_FOREST("LFo", "Large Forest", 1, 8, List.of(Vegetables.CARROT, Vegetables.MUSHROOM));
 
     private final String abbreviation;
     private final String name;

@@ -18,12 +18,13 @@ public class Land {
     private Vector2d max;
     private Vector2d min;
 
-    public Land(final Map<Vector2d, Tile> startConfiguration, final Vector2d barnLocation) {
-        this.map = startConfiguration;
-        min = (Vector2d) startConfiguration.keySet().toArray()[0];
-        max = (Vector2d) startConfiguration.keySet().toArray()[0];
-        for (final Vector2d vector2d : this.map.keySet()) {
-            this.setMinMax(vector2d);
+    public Land(final Map<Vector2d, Tiles> startConfiguration, final Vector2d barnLocation) {
+        this.map = new HashMap<>();
+        this.min = (Vector2d) startConfiguration.keySet().toArray()[0];
+        this.max = (Vector2d) startConfiguration.keySet().toArray()[0];
+        for (final Map.Entry<Vector2d, Tiles> entry : startConfiguration.entrySet()) {
+            this.setMinMax(entry.getKey());
+            this.map.put(entry.getKey(),entry.getValue().getTile());
         }
         this.barnLocation = barnLocation;
         if (this.map.get(barnLocation).getTiles() != Tiles.BARN) throw new IllegalArgumentException("Not a barn");
