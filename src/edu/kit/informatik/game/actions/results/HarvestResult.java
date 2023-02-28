@@ -14,7 +14,7 @@ public class HarvestResult extends ActionResult {
     private final Vegetables vegetable;
 
     /**
-     * this instatiates a new harvest result containing the given amount and vegetable
+     * this instantiates a new harvest result containing the given amount and vegetable
      * @param amount the amount of vegetables that were harvested
      * @param vegetable the kind of vegetable that was harvested
      */

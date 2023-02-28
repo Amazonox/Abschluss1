@@ -17,7 +17,10 @@ public enum ErrorMessage {
     NO_VEGETABLE_ON_TILE("There are no vegetables on this tile"),
     NOT_ENOUGH_VEGETABLES_ON_TILE("There are not enough vegetables on this tile"),
     NOT_A_COMMAND("This string doesn't fulfill all the requirements for an command,"
-             + "either the command or the arguments are faulted");
+             + "either the command or the arguments are faulted"),
+    TOO_MANY_BARNS("Each land should only have one barn"),
+    NO_BARN("Each land should have a barn");
+
 
     private final String message;
 

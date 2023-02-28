@@ -45,7 +45,7 @@ public class Counter {
         for (final Counter counter : counters) {
             counter.roundsToEnd--;
             if (counter.roundsToEnd == 0) {
-                if (counter.onCountdown.onCountDown()) {
+                if (counter.onCountdown.onCountdown()) {
                     counter.roundsToEnd = counter.totalRounds;
                 } else {
                     toRemove.add(counter);

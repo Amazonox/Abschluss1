@@ -29,7 +29,8 @@ public enum Command {
                                 , Main.WORD_NUMBER_SEPERATOR, game.getPlayersCurrentGold()))
                         .toString();
             }
-            stringBuilder.append(String.format(" (spoils in %d turns)", barn.foodSpoilsIn()));
+            stringBuilder.append(String.format(" (spoils in %d %s)"
+                , barn.foodSpoilsIn(), Main.TURN.fromAmount(barn.foodSpoilsIn())));
             stringBuilder.append(System.lineSeparator());
             final List<Vegetables> sortedVegetables = storedVegetables.vegetablesSortedByAmountAsc();
             final Collection<Vegetables> toRemove = new ArrayList<>();
@@ -74,23 +75,7 @@ public enum Command {
         @Override
         String execute(final Game game, final String[] lineParts) {
             final Market market = game.getMarket();
-            int wordLength = 0;
-            int integerLength = 0;
-            for (final Vegetables vegetable : Vegetables.values()) {
-                wordLength = Math.max(wordLength, vegetable.getPlural().length() + Main.WORD_NUMBER_SEPERATOR.length());
-                integerLength = Math.max(Integer.toString(market.getSellingPrice(vegetable)).length(), integerLength);
-            }
-            final int totalLength = wordLength + integerLength + Main.SPACE.length();
-            final StringBuilder stringBuilder = new StringBuilder();
-            final Collection<Vegetables> marketSort = market.getVegetableListByMarketPriceList();
-            for (final Vegetables vegetable : marketSort) {
-                final String front = vegetable.getPlural() + Main.WORD_NUMBER_SEPERATOR;
-                final String back = Integer.toString(market.getSellingPrice(vegetable));
-                stringBuilder.append(StringUtils.indentCorrectly(totalLength, front, back, Main.SPACE));
-                stringBuilder.append(System.lineSeparator());
-            }
-            stringBuilder.delete(stringBuilder.length() - System.lineSeparator().length(), stringBuilder.length());
-            return stringBuilder.toString();
+            return market.toString();
         }
     },
     SELL("sell(( (%s))+| all)?".formatted(Vegetables.getSingularRegex())) {
@@ -111,10 +96,10 @@ public enum Command {
             return game.performAction(new Sell(vegetableAmounts)).toString();
         }
     },
-    BUY_VEGETABLE("buy (%s)".formatted(Vegetables.getSingularRegex())) {
+    BUY_VEGETABLE("buy vegetable (%s)".formatted(Vegetables.getSingularRegex())) {
         @Override
         String execute(Game game, String[] lineParts) throws GameException {
-            Vegetables vegetable = Vegetables.fromSingular(lineParts[BEGINNING_OF_VEGETABLE_LIST]);
+            Vegetables vegetable = Vegetables.fromSingular(lineParts[BEGINNING_OF_VEGETABLE_LIST + OFFSET_BECAUSE_VEGETABLE]);
             return game.performAction(new BuyVegetable(vegetable)).toString();
         }
     },
@@ -137,8 +122,8 @@ public enum Command {
     PLANT("plant (%s) (%s) (%s)".formatted(Main.INTEGER_REGEX, Main.INTEGER_REGEX, Vegetables.getSingularRegex())) {
         @Override
         String execute(Game game, String[] lineParts) throws GameException {
-            Vector2d location = new Vector2d(lineParts[POSITION_OF_X_VALUE], lineParts[POSITION_OF_Y_VALUE]);
-            Vegetables vegetable = Vegetables.fromSingular(lineParts[POSITION_OF_VEGETABLEF_IN_LINE]);
+            final Vector2d location = new Vector2d(lineParts[POSITION_OF_X_VALUE], lineParts[POSITION_OF_Y_VALUE]);
+            final Vegetables vegetable = Vegetables.fromSingular(lineParts[POSITION_OF_VEGETABLE_IN_LINE]);
             return game.performAction(new Plant(location, vegetable)).toString();
         }
     },
@@ -158,15 +143,16 @@ public enum Command {
         }
     };
     public static final int LINE_PART_LENGTH_WITHOUT_ARGUMENTS = 1;
-    public static final int POSITION_OF_VEGETABLEF_IN_LINE = 3;
+    public static final int POSITION_OF_VEGETABLE_IN_LINE = 3;
     public static final int POSITION_OF_AMOUNT_IN_LINE = 3;
     public static final int POSITION_OF_Y_VALUE = 2;
     public static final int POSITION_OF_X_VALUE = 1;
     public static final int OFFSET_BECAUSE_LAND = 1;
+    public static final int OFFSET_BECAUSE_VEGETABLE = 1;
     public static final int BEGINNING_OF_VEGETABLE_LIST = 1;
     public static final int ALL_LOCATION = 1;
 
-    String commandMatch;
+    private final String commandMatch;
 
     Command(final String commandMatch) {
         this.commandMatch = commandMatch;

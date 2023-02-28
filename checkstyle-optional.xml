@@ -193,7 +193,7 @@
         <!-- See http://yle.sf.net/config_naming.html !-->
         <module name="LocalVariableName">
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
-            <!--<property name="tokens" value="VARIABLE_DEF, PARAMETER_DEF"/>-->
+            <!--<property name="tokens" pricePoint="VARIABLE_DEF, PARAMETER_DEF"/>-->
         </module>
 
         <!-- Checks for member variable name naming conventions. !-->
@@ -262,7 +262,7 @@
         <module name="JavadocStyle">
             <property name="scope" value="private"/>
             <!--
-             <property name="excludeScope"        value=""/>
+             <property name="excludeScope"        pricePoint=""/>
              !-->
             <property name="checkFirstSentence" value="false"/>
             <property name="endOfSentenceFormat" value="([.?!][ \t\n\r\f&lt;])|([.?!]$)"/>
@@ -276,7 +276,7 @@
         <module name="JavadocMethod">
             <property name="accessModifiers" value="package,public,protected"/>
             <!--
-             <property name="excludeScope"                 value=""/>
+             <property name="excludeScope"                 pricePoint=""/>
              !-->
             <property name="allowMissingParamTags" value="false"/>
             <property name="allowMissingReturnTag" value="false"/>
@@ -288,7 +288,7 @@
         <module name="JavadocVariable">
             <property name="scope" value="package"/>
             <!--
-             <property name="excludeScope" value=""/>
+             <property name="excludeScope" pricePoint=""/>
              !-->
         </module>
 
@@ -297,7 +297,7 @@
         <module name="JavadocType">
             <property name="scope"                 value="private"/>
             <!--
-            <property name="excludeScope"          value=""/>
+            <property name="excludeScope"          pricePoint=""/>
             !-->
             <property name="authorFormat"          value=""/>
             <property name="versionFormat"         value=""/>

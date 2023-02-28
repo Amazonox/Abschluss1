@@ -1,6 +1,6 @@
 package edu.kit.informatik.game.actions.results;
 
-import edu.kit.informatik.game.elements.Tiles;
+import edu.kit.informatik.game.elements.TileType;
 import edu.kit.informatik.ui.Main;
 
 /**
@@ -10,7 +10,7 @@ import edu.kit.informatik.ui.Main;
  * @version 1.0
  */
 public class BuyLandResult extends ActionResult {
-    private final Tiles tile;
+    private final TileType tile;
     private final int gold;
 
     /**
@@ -19,7 +19,7 @@ public class BuyLandResult extends ActionResult {
      * @param tile the tile that was bought
      * @param gold the gold that was spent when buying the tile
      */
-    public BuyLandResult(final Tiles tile, final int gold) {
+    public BuyLandResult(final TileType tile, final int gold) {
         this.tile = tile;
         this.gold = gold;
     }

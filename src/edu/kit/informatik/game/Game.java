@@ -4,11 +4,10 @@ import edu.kit.informatik.game.actions.Action;
 import edu.kit.informatik.game.actions.results.ActionResult;
 import edu.kit.informatik.game.elements.Barn;
 import edu.kit.informatik.game.elements.Market;
-import edu.kit.informatik.game.elements.MarketPriceList;
-import edu.kit.informatik.game.elements.Tile;
-import edu.kit.informatik.game.elements.Tiles;
+import edu.kit.informatik.game.storages.MarketPriceList;
+import edu.kit.informatik.game.elements.TileType;
 import edu.kit.informatik.game.elements.Vegetables;
-import edu.kit.informatik.game.storages.Land;
+import edu.kit.informatik.game.elements.Land;
 import edu.kit.informatik.game.storages.PriceLink;
 import edu.kit.informatik.game.storages.TileScrambler;
 import edu.kit.informatik.game.storages.TurnInformation;
@@ -18,7 +17,6 @@ import edu.kit.informatik.utils.TurnEndListener;
 import edu.kit.informatik.utils.Vector2d;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,16 +24,15 @@ public class Game {
     private static final List<Vegetables> START_VEGETABLES =
         List.of(Vegetables.CARROT, Vegetables.TOMATO, Vegetables.SALAD,
             Vegetables.MUSHROOM);
-    private static final Vector2d BARN_LOCATION = new Vector2d(0, 0);
-    private static final Map<Vector2d, Tiles> START_MAP = Map.of(
-        BARN_LOCATION,
-        Tiles.BARN,
+    private static final Map<Vector2d, TileType> START_MAP = Map.of(
+        new Vector2d(0, 0),
+        TileType.BARN,
         new Vector2d(-1, 0),
-        Tiles.GARDEN,
+        TileType.GARDEN,
         new Vector2d(1, 0),
-        Tiles.GARDEN,
+        TileType.GARDEN,
         new Vector2d(0, 1),
-        Tiles.FIELD);
+        TileType.FIELD);
     private static final MarketPriceList MARKET_PRICE_LIST = new MarketPriceList(
         Map.of(Vegetables.MUSHROOM, new int[] {12, 15, 16, 17, 20},
             Vegetables.CARROT, new int[] {3, 2, 2, 2, 1},
@@ -68,7 +65,7 @@ public class Game {
     private void intPlayers(final int startGold, final Iterable<String> playerNames, final int endGold) {
         for (final String name : playerNames) {
             this.playerList.add(
-                new Player(name, startGold, new Land(START_MAP, BARN_LOCATION), START_VEGETABLES));
+                new Player(name, startGold, new Land(START_MAP), START_VEGETABLES));
         }
     }
 
@@ -100,14 +97,14 @@ public class Game {
         return new TileScrambler(this.getTilesInGameAfterStart(), seed);
     }
 
-    private List<Tiles> getTilesInGameAfterStart() {
-        final List<Tiles> tiles = new ArrayList<>();
-        for (final Tiles tile : Tiles.values()) {
+    private List<TileType> getTilesInGameAfterStart() {
+        final List<TileType> tiles = new ArrayList<>();
+        for (final TileType tile : TileType.values()) {
             for (int i = 0; i < tile.getTimesInGamePerPlayer() * this.playerList.size(); i++) {
                 tiles.add(tile);
             }
         }
-        for (final Tiles tile : START_MAP.values()) {
+        for (final TileType tile : START_MAP.values()) {
             for (int i = 0; i < this.playerList.size(); i++)
                 tiles.remove(tile);
         }

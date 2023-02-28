@@ -24,7 +24,7 @@ public abstract class ActionResult {
     @Override
     public String toString() {
         if (this.turnInformation != null)
-            return System.lineSeparator() + this.turnInformation.toString();
+            return System.lineSeparator() + this.turnInformation;
         return "";
     }
 }

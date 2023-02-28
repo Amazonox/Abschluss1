@@ -1,7 +1,7 @@
 package edu.kit.informatik.game;
 
 import edu.kit.informatik.game.elements.Vegetables;
-import edu.kit.informatik.game.storages.Land;
+import edu.kit.informatik.game.elements.Land;
 import edu.kit.informatik.ui.ErrorMessage;
 import edu.kit.informatik.ui.GameException;
 
